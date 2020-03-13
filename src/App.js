@@ -1,14 +1,14 @@
 import React from 'react';
-import { Provider } from 'react-redux'
 
 import './App.css';
 import { Counter } from './features/counter/Counter';
 import { Dashboard } from './scenes';
+import logo from './logo.svg';
 
 function App() {
   return (
     <div className="App">
-      { /* <header className="App-header">
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
         <p>
