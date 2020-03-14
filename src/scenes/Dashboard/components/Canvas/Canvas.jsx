@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import * as three from 'three';
 import getOrbitControls from 'three-orbit-controls';
 import GLTFExporter from 'three-gltf-exporter';
-const write = require('write');
-
 
 const OrbitControls = getOrbitControls(three);
 
@@ -164,6 +162,32 @@ class Canvas extends Component {
         // console.log("HEeeeeeeeeelo", JSON.stringify(this.threeD_scene.toJSON()));
     }
 
+    saveScene = () => {
+        const exporter = new GLTFExporter();
+        exporter.parse(this.threeD_scene, function ( gltf ) {
+            function download(data, filename, type) {
+                var file = new Blob([data], {type: type});
+                if (window.navigator.msSaveOrOpenBlob) // IE10+
+                    window.navigator.msSaveOrOpenBlob(file, filename);
+                else { // Others
+                    var a = document.createElement("a"),
+                            url = URL.createObjectURL(file);
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(function() {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);  
+                    }, 0); 
+                }
+            }
+            download(gltf, 'test', 'application/json');
+        }, {
+            binary: false,
+        });
+    }
+
     render() {
         return <div ref={ref => this.mount = ref} />;
     }
@@ -171,15 +195,6 @@ class Canvas extends Component {
     componentDidMount() {
         this.init();
         this.animate3DPage();
-        const exporter = new GLTFExporter();
-        exporter.parse(this.threeD_scene, function ( gltf ) {
-            console.log( JSON.stringify(gltf) );
-            // write.sync('foo.txt', 'some data...', { newline: true }); 
-            // require('fs').writeFileSync('/Users/prabalraghav/Projects/poc/demo-one-asests-lux-ui/', Buffer.from(gltf));
-            // downloadJSON( gltf );
-        }, {
-            binary: false,
-        } );
     }
 }
 

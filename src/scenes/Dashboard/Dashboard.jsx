@@ -5,10 +5,14 @@ import { Canvas } from './components';
 import { cameraConfig } from '../../config';
 
 class Dashboard extends Component {
+    handleSave = () => {
+        this.canvas.saveScene();
+    }
     render() {
         return (
-            <ElevateAppBar appName={'Assets-Lux'}>
-                <Canvas 
+            <ElevateAppBar appName={'Assets-Lux'} onSave={this.handleSave}>
+                <Canvas
+                    ref={ref => this.canvas = ref} 
                     camera={cameraConfig}
                 />
             </ElevateAppBar>
